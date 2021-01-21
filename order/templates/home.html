@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Order</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    {{ if eq .Status "" }}
+        <form action="/finish" method="POST">
+            <label>Número do Cartão</label>
+            <input type="text" value="" name="ccNumber" />
+            <label>Nome</label>
+            <input type="text" value="" name="ccName" />
+            <label>Cupom</label>
+            <input type="text" value="" name="coupon" />
+            <input type="submit" value="Comprar" />
+        </form>    
+    {{ else }}
+        <div>
+            <h1>Status: {{ .Status }}</h1>
+        </div>
+    {{ end }}
+</body>
+</html>
