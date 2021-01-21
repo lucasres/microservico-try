@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"text/template"
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 var URI_MAKE_PAYMENT = "http://localhost:9001"
@@ -23,13 +24,15 @@ type RequestPaymentService struct {
 }
 
 func MakeRequestPaymentService(r RequestPaymentService) Result {
+	httpRetryClient := retryablehttp.NewClient()
+	httpRetryClient.RetryMax = 10
 	//adiciona os dados para irem na request
 	values := url.Values{}
 	values.Add("ccNumber", r.CcNumber)
 	values.Add("ccName", r.CcName)
 	values.Add("coupon", r.Coupon)
 	//faz a request
-	response, err := http.PostForm(URI_MAKE_PAYMENT, values)
+	response, err := httpRetryClient.PostForm(URI_MAKE_PAYMENT, values)
 	if (err != nil) {
 		log.Fatal("Erro in request", err)
 	}
